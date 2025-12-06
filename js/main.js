@@ -87,207 +87,265 @@ function displaySpotifyConnect() {
 function displaySpotifyTrack(data) {
     const spotifyContent = document.getElementById('spotify-content');
 
-    // Calculate progress percentage if available
-    const progressPercent = data.progress && data.duration ? (data.progress / data.duration) * 100 : 0;
-
     spotifyContent.innerHTML = `
-        <div class="spotify-player">
-            <div class="spotify-album-art">
-                <img src="${data.image}" alt="${data.track}" />
-                <div class="spotify-overlay">
-                    <svg class="spotify-icon" viewBox="0 0 24 24" fill="#1DB954">
-                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                    </svg>
+        <div class="spotify-premium-card">
+            <div class="spotify-glow"></div>
+            <div class="spotify-content-wrapper">
+                <div class="album-container">
+                    <div class="album-shadow"></div>
+                    <img src="${data.image}" alt="${data.track}" class="album-cover" />
+                    <div class="playing-animation">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="spotify-track-info">
-                <div class="now-playing-badge">
-                    <span class="pulse-dot"></span>
-                    NOW PLAYING
+                
+                <div class="track-details">
+                    <div class="status-badge">
+                        <span class="live-indicator"></span>
+                        <span>NOW PLAYING</span>
+                    </div>
+                    
+                    <h3 class="track-title">${data.track}</h3>
+                    <p class="artist-name">${data.artist}</p>
+                    <p class="album-title">${data.album}</p>
+                    
+                    ${data.url ? `
+                        <a href="${data.url}" target="_blank" class="spotify-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                            </svg>
+                            Listen on Spotify
+                        </a>
+                    ` : ''}
                 </div>
-                <h3 class="spotify-track-name">${data.track}</h3>
-                <p class="spotify-artist-name">${data.artist}</p>
-                <p class="spotify-album-name">${data.album}</p>
-                ${data.url ? `
-                    <a href="${data.url}" target="_blank" class="spotify-open-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                        </svg>
-                        Open in Spotify
-                    </a>
-                ` : ''}
             </div>
         </div>
         
         <style>
-            .spotify-player {
-                background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
-                border-radius: 16px;
-                padding: 24px;
-                display: flex;
-                gap: 20px;
-                align-items: center;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+            .spotify-premium-card {
                 position: relative;
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 20px;
+                padding: 32px;
                 overflow: hidden;
+                box-shadow: 
+                    0 0 0 1px rgba(255, 255, 255, 0.1),
+                    0 20px 60px rgba(0, 0, 0, 0.1);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
-            .spotify-player::before {
-                content: '';
+            .spotify-premium-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 
+                    0 0 0 1px rgba(255, 255, 255, 0.2),
+                    0 30px 80px rgba(0, 0, 0, 0.15);
+            }
+            
+            .spotify-glow {
                 position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #1DB954 0%, #1ed760 100%);
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+                animation: glowPulse 3s ease-in-out infinite;
+                pointer-events: none;
             }
             
-            .spotify-album-art {
+            @keyframes glowPulse {
+                0%, 100% { opacity: 0.5; transform: scale(1); }
+                50% { opacity: 0.8; transform: scale(1.1); }
+            }
+            
+            .spotify-content-wrapper {
                 position: relative;
-                width: 100px;
-                height: 100px;
-                border-radius: 8px;
-                overflow: hidden;
-                flex-shrink: 0;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                display: flex;
+                gap: 28px;
+                align-items: center;
+                z-index: 1;
             }
             
-            .spotify-album-art img {
-                width: 100%;
-                height: 100%;
+            .album-container {
+                position: relative;
+                flex-shrink: 0;
+            }
+            
+            .album-shadow {
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                height: 20px;
+                background: rgba(0, 0, 0, 0.3);
+                filter: blur(15px);
+                border-radius: 50%;
+            }
+            
+            .album-cover {
+                width: 140px;
+                height: 140px;
+                border-radius: 12px;
                 object-fit: cover;
                 display: block;
+                box-shadow: 
+                    0 10px 40px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.1);
+                transition: all 0.3s ease;
             }
             
-            .spotify-overlay {
+            .album-container:hover .album-cover {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 
+                    0 15px 50px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+            }
+            
+            .playing-animation {
                 position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.6);
+                bottom: 12px;
+                right: 12px;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0;
-                transition: opacity 0.3s;
+                gap: 3px;
+                align-items: flex-end;
+                height: 20px;
+                padding: 6px 8px;
+                background: rgba(29, 185, 84, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
             }
             
-            .spotify-album-art:hover .spotify-overlay {
-                opacity: 1;
+            .playing-animation .bar {
+                width: 3px;
+                background: white;
+                border-radius: 2px;
+                animation: barBounce 1s ease-in-out infinite;
             }
             
-            .spotify-icon {
-                width: 40px;
-                height: 40px;
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            .playing-animation .bar:nth-child(1) { height: 70%; animation-delay: 0s; }
+            .playing-animation .bar:nth-child(2) { height: 50%; animation-delay: 0.2s; }
+            .playing-animation .bar:nth-child(3) { height: 90%; animation-delay: 0.4s; }
+            
+            @keyframes barBounce {
+                0%, 100% { transform: scaleY(1); }
+                50% { transform: scaleY(0.3); }
             }
             
-            .spotify-track-info {
+            .track-details {
                 flex: 1;
                 min-width: 0;
             }
             
-            .now-playing-badge {
+            .status-badge {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
-                font-size: 10px;
+                gap: 8px;
+                padding: 6px 14px;
+                background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+                border-radius: 20px;
+                font-size: 11px;
                 font-weight: 700;
-                letter-spacing: 1px;
-                color: #1DB954;
-                margin-bottom: 8px;
-                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: white;
+                margin-bottom: 16px;
+                box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+                animation: badgePulse 2s ease-in-out infinite;
             }
             
-            .pulse-dot {
+            @keyframes badgePulse {
+                0%, 100% { box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3); }
+                50% { box-shadow: 0 4px 20px rgba(29, 185, 84, 0.5); }
+            }
+            
+            .live-indicator {
                 width: 8px;
                 height: 8px;
-                background: #1DB954;
+                background: white;
                 border-radius: 50%;
-                animation: spotifyPulse 2s infinite;
+                animation: livePulse 1.5s ease-in-out infinite;
             }
             
-            @keyframes spotifyPulse {
-                0%, 100% { 
-                    opacity: 1;
-                    transform: scale(1);
-                }
-                50% { 
-                    opacity: 0.5;
-                    transform: scale(0.9);
-                }
+            @keyframes livePulse {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: 0.6; transform: scale(0.8); }
             }
             
-            .spotify-track-name {
-                font-size: 18px;
-                font-weight: 700;
-                color: #FFFFFF;
-                margin: 0 0 6px 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+            .track-title {
+                font-size: 24px;
+                font-weight: 800;
+                color: var(--text-primary);
+                margin: 0 0 8px 0;
+                line-height: 1.2;
                 letter-spacing: -0.5px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
             
-            .spotify-artist-name {
+            .artist-name {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                margin: 0 0 4px 0;
+            }
+            
+            .album-title {
                 font-size: 14px;
                 font-weight: 500;
-                color: #B3B3B3;
-                margin: 0 0 4px 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                color: var(--text-tertiary);
+                margin: 0 0 20px 0;
             }
             
-            .spotify-album-name {
-                font-size: 12px;
-                font-weight: 400;
-                color: #6A6A6A;
-                margin: 0 0 12px 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            
-            .spotify-open-btn {
+            .spotify-btn {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
-                padding: 8px 16px;
-                background: #1DB954;
-                color: #FFFFFF;
+                gap: 10px;
+                padding: 12px 24px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                color: white;
                 text-decoration: none;
-                border-radius: 24px;
-                font-size: 12px;
-                font-weight: 700;
-                transition: all 0.2s;
-                box-shadow: 0 2px 8px rgba(29, 185, 84, 0.3);
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 600;
+                box-shadow: 
+                    0 4px 15px rgba(99, 102, 241, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.1);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
-            .spotify-open-btn:hover {
-                background: #1ed760;
-                transform: scale(1.05);
-                box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
+            .spotify-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 
+                    0 8px 25px rgba(99, 102, 241, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+                background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
             }
             
-            @media (max-width: 600px) {
-                .spotify-player {
+            @media (max-width: 650px) {
+                .spotify-premium-card {
+                    padding: 24px;
+                }
+                
+                .spotify-content-wrapper {
                     flex-direction: column;
                     text-align: center;
-                    padding: 20px;
+                    gap: 24px;
                 }
                 
-                .spotify-album-art {
-                    width: 120px;
-                    height: 120px;
+                .album-cover {
+                    width: 160px;
+                    height: 160px;
                 }
                 
-                .spotify-track-name,
-                .spotify-artist-name,
-                .spotify-album-name {
-                    white-space: normal;
+                .spotify-btn {
+                    width: 100%;
+                    justify-content: center;
                 }
             }
         </style>
