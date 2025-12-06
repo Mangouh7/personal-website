@@ -3,7 +3,7 @@
 // ====================================
 
 const SPOTIFY_CONFIG = {
-    clientId: 'ef640275d3494247b4c9d3913de0c82d',
+    clientId: 'bcd2247a006a4907bda7563db0fabb21',
     redirectUri: 'https://mangouh7.github.io/personal-website/',
     scopes: 'user-read-currently-playing user-read-playback-state'
 };
